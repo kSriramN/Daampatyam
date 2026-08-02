@@ -5,6 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#FBF4F0" />
   <title>Daampatyam</title>
+  <script>
+    // Shows any crash directly on the page — no browser DevTools needed.
+    window.addEventListener("error", function (e) {
+      showBootError(e.error ? (e.error.stack || e.error.message) : e.message);
+    });
+    window.addEventListener("unhandledrejection", function (e) {
+      showBootError(e.reason ? (e.reason.stack || e.reason.message || String(e.reason)) : "Unknown error");
+    });
+    function showBootError(text) {
+      var el = document.getElementById("boot-error");
+      if (!el) {
+        el = document.createElement("pre");
+        el.id = "boot-error";
+        el.style.cssText = "position:fixed;inset:0;background:#fff;color:#a00;padding:16px;font-size:12px;white-space:pre-wrap;overflow:auto;z-index:99999;font-family:monospace;";
+        document.body.appendChild(el);
+      }
+      el.textContent = "App crashed:\n\n" + text;
+    }
+  </script>
 </head>
 <body>
   <div id="root"></div>
