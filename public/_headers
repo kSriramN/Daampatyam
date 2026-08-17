@@ -1,0 +1,11 @@
+/manifest.json
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/icon-*.png
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/favicon-v2.ico
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/apple-touch-icon-v2.png
+  Cache-Control: no-cache, no-store, must-revalidate
