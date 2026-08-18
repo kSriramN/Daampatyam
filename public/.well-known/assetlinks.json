@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.intellramtech.daampatyam",
+        "sha256_cert_fingerprints": ["C9:F5:72:E1:12:5E:00:54:C8:91:8F:B7:F9:7C:56:FF:83:8F:DB:1B:E4:3D:97:FD:A1:52:B9:98:EA:4E:6C:9D"]
+      }
+    }]
