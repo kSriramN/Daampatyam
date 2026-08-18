@@ -4,8 +4,8 @@
 /icon-*.png
   Cache-Control: no-cache, no-store, must-revalidate
 
-/favicon-v2.ico
+/favicon-v3.ico
   Cache-Control: no-cache, no-store, must-revalidate
 
-/apple-touch-icon-v2.png
+/apple-touch-icon-v3.png
   Cache-Control: no-cache, no-store, must-revalidate
