@@ -267,6 +267,23 @@ export default function App() {
     setPhase("welcome");
   }
 
+  
+  async function deleteAccountForever() {
+    if (pendingSaves > 0) { showToast("Still saving — try again in a moment."); return; }
+    try {
+      const { error } = await supabase.rpc("delete_own_account");
+      if (error) throw error;
+      localStorage.removeItem("daampatyam-mode");
+      setMasterKey(null); setMeta(null);
+      setProfile(null); setChapters([]); setCounters({ compliments: 0, laughs: 0 });
+      setMoods([]); setNotes([]); setTodos([]); setPromises([]); setBucketlist([]); setReminders([]);
+      setTab("home");
+      setPhase("welcome");
+    } catch (e) {
+      showToast("Couldn't delete account — please try again.");
+    }
+  }
+
   /* ---------------- FEEDBACK (once per install, until captured) ---------------- */
   useEffect(() => {
     if (phase !== "app") return;
@@ -523,7 +540,9 @@ export default function App() {
           <ProfileScreen
             profile={profile} chapterCount={chapters.length}
             mode={getBackendMode()}
-            onLock={lockApp} onLogOut={logOutToWelcome}
+                        onLock={lockApp}
+            onLogOut={logOutToWelcome}
+            onDeleteAccount={deleteAccountForever}
             onExport={exportData} onImport={importData}
             onOpenPartnerProfile={() => setShowPartnerProfile(true)}
             onOpenScoreDetail={() => setShowScoreDetail(true)}
@@ -1472,7 +1491,7 @@ function BucketList({ bucketlist, onAddBucketItem, onToggleBucketItem, onDeleteB
 /* ---------------------------------------------------------------
    PROFILE / SETTINGS
 ----------------------------------------------------------------*/
-function ProfileScreen({ profile, chapterCount, mode, onLock, onLogOut, onExport, onImport, onOpenPartnerProfile, onOpenScoreDetail, onMigrateToAccount }) {
+function ProfileScreen({ profile, chapterCount, mode, onLock, onLogOut, onExport, onImport, onOpenPartnerProfile, onOpenScoreDetail, onMigrateToAccount, onDeleteAccount }) {
   const [importBusy, setImportBusy] = useState(false);
   const [importMsg, setImportMsg] = useState("");
   const [showMigrate, setShowMigrate] = useState(false);
@@ -1528,6 +1547,20 @@ function ProfileScreen({ profile, chapterCount, mode, onLock, onLogOut, onExport
       <button onClick={onLock} style={{ ...outlineBtn, marginTop: 20, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}><Lock size={14} /> Lock my story</button>
       {mode === "account" && (
         <button onClick={onLogOut} style={{ ...outlineBtn, marginTop: 8, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}><LogOut size={14} /> Log out</button>
+      )}
+      {mode === "account" && (
+        <button
+          onClick={() => {
+            if (window.confirm("This permanently deletes your account and everything in it. This cannot be undone. Continue?")) {
+              if (window.confirm("Are you absolutely sure? Type nothing needed — just confirm once more.")) {
+                onDeleteAccount();
+              }
+            }
+          }}
+          style={{ ...outlineBtn, marginTop: 8, borderColor: "var(--accent-dark)", color: "var(--accent-dark)", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}
+        >
+          <Trash2 size={14} /> Delete my account
+        </button>
       )}
 
       {showMigrate && (
